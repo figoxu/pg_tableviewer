@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"log"
@@ -13,44 +13,47 @@ import (
 	"github.com/jinzhu/gorm"
 	"time"
 	_ "github.com/mattn/go-sqlite3"
+	"fmt"
+	"github.com/figoxu/Figo"
 )
 
 var sysEnv = SysEnv{}
 
 type SysEnv struct {
-	path_dist string
-	port      string
-	db_path   string
-	db        *gorm.DB
+	Path_dist string
+	Port      string
+	Db_path   string
+	Db        *gorm.DB
 }
 
 func main() {
 	log.Println("Hello World")
 	initConf()
-	initWeb(sysEnv.port)
+	fmt.Println(">>>> ",Figo.JsonString(sysEnv))
+	initWeb(sysEnv.Port)
 }
 
 func initConf() {
 	cfg_core, err := config.NewConfig("ini", "conf.ini")
 	utee.Chk(err)
-	sysEnv.path_dist = cfg_core.String("http::dist")
-	sysEnv.port = cfg_core.String("http::port")
-	sysEnv.db_path = cfg_core.String("db_sqlite::path")
+	sysEnv.Path_dist = cfg_core.String("http::dist")
+	sysEnv.Port = cfg_core.String("http::Port")
+	sysEnv.Db_path = cfg_core.String("db_sqlite::path")
 
-	sqlitedb, err := gorm.Open("sqlite3", sysEnv.db_path)
+	sqlitedb, err := gorm.Open("sqlite3", sysEnv.Db_path)
 	utee.Chk(err)
 	sqlitedb.DB().SetConnMaxLifetime(time.Minute * 5)
 	sqlitedb.DB().SetMaxIdleConns(0)
 	sqlitedb.DB().SetMaxOpenConns(5)
 	sqlitedb.SingularTable(true)
 	sqlitedb.Debug().AutoMigrate(&PgDbInfo{})
-	sysEnv.db = sqlitedb
+	sysEnv.Db = sqlitedb
 }
 
 func initWeb(port string) {
 	engine := mount()
 	http.Handle("/", engine)
-	log.Fatal(http.ListenAndServe(sysEnv.port, nil))
+	log.Fatal(http.ListenAndServe(sysEnv.Port, nil))
 }
 
 func mount() *gin.Engine {
@@ -58,7 +61,7 @@ func mount() *gin.Engine {
 	r.Use(gin.Recovery())
 	store := cookie.NewStore([]byte("xujh945@qq.com"))
 	r.Use(sessions.Sessions("figoxu", store))
-	r.Use(static.Serve("/", static.LocalFile(sysEnv.path_dist, true)))
+	r.Use(static.Serve("/", static.LocalFile(sysEnv.Path_dist, true)))
 	api := r.Group("/api")
 	{
 		pg_db_info := api.Group("/pg_db_info")

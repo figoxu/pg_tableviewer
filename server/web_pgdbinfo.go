@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,7 +8,7 @@ import (
 func h_pgdbinfo_add(c *gin.Context){
 	pgDbInfo := PgDbInfo{}
 	c.BindJSON(&pgDbInfo)
-	userGroupDao := NewPgDbInfoDao(sysEnv.db)
+	userGroupDao := NewPgDbInfoDao(sysEnv.Db)
 	userGroupDao.Save(&pgDbInfo)
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
@@ -18,7 +18,7 @@ func h_pgdbinfo_add(c *gin.Context){
 func h_pgdbinfo_update(c *gin.Context){
 	pgDbInfo := PgDbInfo{}
 	c.BindJSON(&pgDbInfo)
-	userGroupDao := NewPgDbInfoDao(sysEnv.db)
+	userGroupDao := NewPgDbInfoDao(sysEnv.Db)
 	userGroupDao.Save(&pgDbInfo)
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
@@ -29,7 +29,7 @@ func h_pgdbinfo_list(c *gin.Context){
 	env := c.MustGet("env").(*Env)
 	ph := env.ph
 	pg, size := ph.Int("pg"), ph.Int("size")
-	pgDbInfoDao := NewPgDbInfoDao(sysEnv.db)
+	pgDbInfoDao := NewPgDbInfoDao(sysEnv.Db)
 	total := pgDbInfoDao.Count()
 	totalPg := (total + size - 1) / size
 	if pg <= 0 {
@@ -51,6 +51,6 @@ func h_pgdbinfo_list(c *gin.Context){
 func h_pgdbinfo_del(c *gin.Context){
 	env := c.MustGet("env").(*Env)
 	id := env.ph.Int("id")
-	pgDbInfoDao := NewPgDbInfoDao(sysEnv.db)
+	pgDbInfoDao := NewPgDbInfoDao(sysEnv.Db)
 	pgDbInfoDao.DelById(id)
 }

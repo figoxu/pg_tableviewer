@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"github.com/jinzhu/gorm"
@@ -16,7 +16,7 @@ type PgDbInfo struct {
 }
 
 func (p *PgDbInfo) ConStr() string{
-	return fmt.Sprint("user=", p.User, " password=", p.Password, " dbname=", p.Dbname, " host=", p.Host, " port=", p.Port, " sslmode=disable")
+	return fmt.Sprint("user=", p.User, " password=", p.Password, " dbname=", p.Dbname, " host=", p.Host, " Port=", p.Port, " sslmode=disable")
 }
 
 type PgDbInfoDao struct {
