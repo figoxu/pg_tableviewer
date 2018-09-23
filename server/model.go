@@ -3,14 +3,20 @@ package server
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
+	"fmt"
 )
 
 type PgDbInfo struct {
+	Id       int
 	User     string
 	Password string
 	Dbname   string
 	Host     string
 	Port     int
+}
+
+func (p *PgDbInfo) ConStr() string{
+	return fmt.Sprint("user=", p.User, " password=", p.Password, " dbname=", p.Dbname, " host=", p.Host, " port=", p.Port, " sslmode=disable")
 }
 
 type PgDbInfoDao struct {
@@ -21,6 +27,12 @@ func NewPgDbInfoDao(db *gorm.DB) *PgDbInfoDao {
 	return &PgDbInfoDao{
 		db: db,
 	}
+}
+
+func (p *PgDbInfoDao) GetByKey(id int) *PgDbInfo {
+	pgDbInfo := &PgDbInfo{}
+	p.db.Raw("SELECT * FROM pg_db_info WHERE id=? ", id).Scan(pgDbInfo)
+	return pgDbInfo
 }
 
 func (p *PgDbInfoDao) Save(dbInfo *PgDbInfo) {
