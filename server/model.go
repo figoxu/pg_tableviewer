@@ -1,6 +1,9 @@
 package server
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	_ "github.com/mattn/go-sqlite3"
+)
 
 type PgDbInfo struct {
 	User     string
@@ -20,7 +23,7 @@ func NewPgDbInfoDao(db *gorm.DB) *PgDbInfoDao {
 	}
 }
 
-func (p *PgDbInfoDao) Save(dbInfo *PgDbInfo){
+func (p *PgDbInfoDao) Save(dbInfo *PgDbInfo) {
 	p.db.Save(dbInfo)
 }
 
@@ -34,4 +37,6 @@ func (p *PgDbInfoDao) Paging(start, pageSize int) []PgDbInfo {
 	return pgDbInfos
 }
 
-
+func (p *PgDbInfoDao) DelById(id int) {
+	p.db.Exec("DELETE FROM pg_db_info WHERE id=? ", id)
+}
