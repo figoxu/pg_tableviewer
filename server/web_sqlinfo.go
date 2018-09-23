@@ -24,3 +24,17 @@ func h_columnInfo_by_tablename(c *gin.Context) {
 	infoes := pg.GetAllColumnInfoesByTableName(tablename, pgDbInfo.ConStr())
 	c.JSON(http.StatusOK, infoes)
 }
+
+func h_comment(c *gin.Context){
+	env := c.MustGet("env").(*Env)
+	dbid := env.ph.Int("dbid")
+	comment:=env.fh.String("comment")
+	pgDbInfoDao := NewPgDbInfoDao(sysEnv.db)
+	pgDbInfo := pgDbInfoDao.GetByKey(dbid)
+	pg.Comment(comment,pgDbInfo.ConStr())
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+	})
+}
+
