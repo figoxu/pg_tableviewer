@@ -7,15 +7,15 @@ import (
 )
 
 type PgDbInfo struct {
-	Id       int
-	User     string
-	Password string
-	Dbname   string
-	Host     string
-	Port     int
+	Id       int    `json:id"`
+	User     string `json:user"`
+	Password string `json:password"`
+	Dbname   string `json:dbname"`
+	Host     string `json:host"`
+	Port     int    `json:"port"`
 }
 
-func (p *PgDbInfo) ConStr() string{
+func (p *PgDbInfo) ConStr() string {
 	return fmt.Sprint("user=", p.User, " password=", p.Password, " dbname=", p.Dbname, " host=", p.Host, " Port=", p.Port, " sslmode=disable")
 }
 

@@ -29,7 +29,7 @@ type SysEnv struct {
 func main() {
 	log.Println("Hello World")
 	initConf()
-	fmt.Println(">>>> ",Figo.JsonString(sysEnv))
+	fmt.Println(">>>> ", Figo.JsonString(sysEnv))
 	initWeb(sysEnv.Port)
 }
 
@@ -62,7 +62,7 @@ func mount() *gin.Engine {
 	store := cookie.NewStore([]byte("xujh945@qq.com"))
 	r.Use(sessions.Sessions("figoxu", store))
 	r.Use(static.Serve("/", static.LocalFile(sysEnv.Path_dist, true)))
-	api := r.Group("/api")
+	api := r.Group("/api", m_gh)
 	{
 		pg_db_info := api.Group("/pg_db_info")
 		{
@@ -72,9 +72,9 @@ func mount() *gin.Engine {
 			pg_db_info.POST("/del/:id", h_pgdbinfo_del)
 			table_info := pg_db_info.Group("/table_info/:dbid")
 			{
-				table_info.GET("/tables",h_tableInfo_all)
-				table_info.GET("/columns",h_columnInfo_by_tablename)
-				table_info.PUT("/comment",h_comment)
+				table_info.GET("/tables", h_tableInfo_all)
+				table_info.GET("/columns", h_columnInfo_by_tablename)
+				table_info.PUT("/comment", h_comment)
 			}
 		}
 	}

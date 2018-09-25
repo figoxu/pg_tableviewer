@@ -9,6 +9,7 @@ import Error404 from './pages/Error404'
 import Demo1 from './pages/Demo1'
 import Demo2 from './pages/Demo2'
 import HeaderAside from './layouts/HeaderAside'
+import DbInfo from "./pages/admin/DbInfo"
 
 // 变量名 routerConfig 为 iceworks 检测关键字
 // ice 会自动在这个变量下添加路由数据
@@ -43,11 +44,16 @@ const routerConfig = [
       title: '演示 1'
     }
   },
-  {
-    path: '/demo2',
-    layout: HeaderAside,
-    component: Demo2
-  }
+    {
+        path: '/demo2',
+        layout: HeaderAside,
+        component: Demo2
+    },
+    {
+        path: '/admin/dbinfo',
+        layout: HeaderAside,
+        component: DbInfo
+    }
 ];
 
 // 不参与菜单显示的

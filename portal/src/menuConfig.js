@@ -22,12 +22,16 @@ const asideMenuConfig = [
         name: '演示 1',
         path: '/demo1/'
       },
-      {
-        name: '演示 2',
-        path: '/demo2/'
-      }
+        {
+            name: '演示 2',
+            path: '/demo2/'
+        }
     ]
-  }
+  },
+    {
+        name: '数据库管理',
+        path: '/admin/dbinfo'
+    }
 ]
 
 // 顶栏菜单配置
