@@ -10,6 +10,7 @@ import Demo1 from './pages/Demo1'
 import Demo2 from './pages/Demo2'
 import HeaderAside from './layouts/HeaderAside'
 import DbInfo from "./pages/admin/DbInfo"
+import TableView from "./pages/admin/TableView"
 
 // 变量名 routerConfig 为 iceworks 检测关键字
 // ice 会自动在这个变量下添加路由数据
@@ -53,6 +54,11 @@ const routerConfig = [
         path: '/admin/dbinfo',
         layout: HeaderAside,
         component: DbInfo
+    },
+    {
+        path: '/admin/tableview',
+        layout: HeaderAside,
+        component: TableView
     }
 ];
 

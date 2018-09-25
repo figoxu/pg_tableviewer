@@ -31,6 +31,10 @@ const asideMenuConfig = [
     {
         name: '数据库管理',
         path: '/admin/dbinfo'
+    },
+    {
+        name: '数据库信息阅读',
+        path: '/admin/tableview'
     }
 ]
 
