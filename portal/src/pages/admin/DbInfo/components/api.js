@@ -26,6 +26,7 @@ const Api = {
         axios({
             method: "POST",
             url: url,
+            data: data,
         }).then(function (res) {
             if (callback) callback(res.data);
         }).catch(function (error) {

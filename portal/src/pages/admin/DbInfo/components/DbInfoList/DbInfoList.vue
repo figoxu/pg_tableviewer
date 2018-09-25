@@ -12,6 +12,14 @@
             <el-table-column prop="dbname" label="实例名" width="199"></el-table-column>
             <el-table-column prop="host" label="主机" width="400"></el-table-column>
             <el-table-column prop="port" label="端口" width="400"></el-table-column>
+
+
+            <el-table-column prop="id" label="维护">
+                <template slot-scope="scope">
+                    <el-button type="primary" icon="el-icon-edit" size="mini" circle
+                               @click="mdfR(scope.row)"></el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="block">
             <el-pagination
@@ -26,16 +34,17 @@
 
 <script>
     import Api from "../api"
+    import { mapMutations } from "vuex"
     export default {
-        name:"DbInfoList",
+        name: "DbInfoList",
         data() {
             return {
                 totalPg: 0,
                 currentPg: 1,
-                tableLoading:false,
+                tableLoading: false,
                 data: []
             }
-        },methods:{
+        }, methods: {
             pg_change: function (pg) {
                 this.tableLoading = true;
                 this.currentPg = pg;
@@ -45,16 +54,20 @@
                     pg: that.currentPg,
                 };
                 Api.list(param, function (data) {
-                    console.log(">>>>>>>>")
-                    console.log(data)
-                    console.log("<<<<<<<<")
                     that.tableLoading = false;
-                    that.totalPg =  data.totalPg;
+                    that.totalPg = data.totalPg;
                     that.data = data.data;
                 })
-            }
-        },mounted: function () {
-            var that=this;
+            },
+            mdfR: function (row) {
+                this.SET_MDF_VISIBLE(true);
+                this.SET_MDF_RESOURCE(row);
+                console.log("修改:", row.id)
+                console.log(">>>>", row.pid)
+            },
+            ...mapMutations('admin/dbinfo', ['SET_MDF_VISIBLE', 'SET_MDF_RESOURCE'])
+        }, mounted: function () {
+            var that = this;
             this.$nextTick(function () {
                 that.pg_change(1);
             })

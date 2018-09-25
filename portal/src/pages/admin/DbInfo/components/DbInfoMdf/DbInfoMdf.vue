@@ -1,18 +1,20 @@
 <template lang="html">
     <div>
         <el-form :model="form" :label-position="labelPosition" :inline="inline" >
-            <el-form-item label="用户名">
-              <el-input v-model="form.name" readonly></el-input>
+            <el-form-item label="账号">
+              <el-input v-model="form.user" ></el-input>
             </el-form-item>
-            <el-form-item label="用户分组">
-                <el-select v-model="form.gids" multiple placeholder="请选择" style="width: 100%;">
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
+            <el-form-item label="密码">
+              <el-input v-model="form.password" ></el-input>
+            </el-form-item>
+            <el-form-item label="实例名">
+              <el-input v-model="form.dbname" ></el-input>
+            </el-form-item>
+            <el-form-item label="主机">
+              <el-input v-model="form.host" ></el-input>
+            </el-form-item>
+            <el-form-item label="端口">
+              <el-input v-model="form.port" ></el-input>
             </el-form-item>
          </el-form>
         <div slot="footer" class="dialog-footer">
@@ -39,25 +41,20 @@
         computed: {
             form:{
                 get: function () {
-                    return this.$store.state.user.mdfResource;
+                    return this.$store.state.admin.dbinfo.mdfResource;
                 },
                 set: function (newValue) {
                     this.SET_MDF_RESOURCE( newValue );
                 }
             }
         },methods:{
-            loadOptions:function(){
-                var that = this;
-                Api.all({},function(data){
-                    that.options = data;
-                })
-            },modify:function(){
+            modify:function(){
                 var that = this;
                 Api.mdf(this.form,function () {
                     that.SET_MDF_VISIBLE(false)
                 })
             },
-            ...mapMutations(['SET_MDF_VISIBLE',"SET_MDF_RESOURCE"])
+            ...mapMutations('admin/dbinfo', ['SET_MDF_VISIBLE',"SET_MDF_RESOURCE"])
         },mounted: function () {
             var that=this;
             this.$nextTick(function () {

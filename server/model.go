@@ -12,7 +12,7 @@ type PgDbInfo struct {
 	Password string `json:"password"`
 	Dbname   string `json:"dbname"`
 	Host     string `json:"host"`
-	Port     int    `json:"port"`
+	Port     string `json:"port"`
 }
 
 func (p *PgDbInfo) ConStr() string {

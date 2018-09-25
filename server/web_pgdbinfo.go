@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"fmt"
+	"github.com/figoxu/Figo"
 )
 
 func h_pgdbinfo_add(c *gin.Context){
@@ -18,6 +20,9 @@ func h_pgdbinfo_add(c *gin.Context){
 func h_pgdbinfo_update(c *gin.Context){
 	pgDbInfo := PgDbInfo{}
 	c.BindJSON(&pgDbInfo)
+	fmt.Println(">>>>>>")
+	fmt.Println(Figo.JsonString(pgDbInfo))
+	fmt.Println("<<<<<<")
 	userGroupDao := NewPgDbInfoDao(sysEnv.Db)
 	userGroupDao.Save(&pgDbInfo)
 	c.JSON(http.StatusOK, map[string]interface{}{
