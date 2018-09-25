@@ -18,6 +18,8 @@
                 <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" size="mini" circle
                                @click="mdfR(scope.row)"></el-button>
+                    <el-button type="danger" icon="el-icon-delete" size="mini" circle
+                               @click="delR(scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -34,7 +36,7 @@
 
 <script>
     import Api from "../api"
-    import { mapMutations } from "vuex"
+    import {mapMutations} from "vuex"
     export default {
         name: "DbInfoList",
         data() {
@@ -64,6 +66,12 @@
                 this.SET_MDF_RESOURCE(row);
                 console.log("修改:", row.id)
                 console.log(">>>>", row.pid)
+            },
+            delR: function (row) {
+                var that = this;
+                Api.del(row,function () {
+                    that.pg_change(that.currentPg);
+                })
             },
             ...mapMutations('admin/dbinfo', ['SET_MDF_VISIBLE', 'SET_MDF_RESOURCE'])
         }, mounted: function () {
