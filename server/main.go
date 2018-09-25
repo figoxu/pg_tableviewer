@@ -46,6 +46,7 @@ func initConf() {
 	sqlitedb.DB().SetMaxIdleConns(0)
 	sqlitedb.DB().SetMaxOpenConns(5)
 	sqlitedb.SingularTable(true)
+	sqlitedb.SetLogger(&Figo.GormLog{})
 	sqlitedb.Debug().AutoMigrate(&PgDbInfo{})
 	sysEnv.Db = sqlitedb
 }

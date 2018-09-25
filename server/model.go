@@ -7,11 +7,11 @@ import (
 )
 
 type PgDbInfo struct {
-	Id       int    `json:id"`
-	User     string `json:user"`
-	Password string `json:password"`
-	Dbname   string `json:dbname"`
-	Host     string `json:host"`
+	Id       int    `json:"id"`
+	User     string `json:"user"`
+	Password string `json:"password"`
+	Dbname   string `json:"dbname"`
+	Host     string `json:"host"`
 	Port     int    `json:"port"`
 }
 
@@ -39,8 +39,14 @@ func (p *PgDbInfoDao) Save(dbInfo *PgDbInfo) {
 	p.db.Save(dbInfo)
 }
 
+type CountVo struct {
+	Val int
+}
+
 func (p *PgDbInfoDao) Count() int {
-	return 0
+	countVo := CountVo{}
+	p.db.Raw("SELECT COUNT(*) val FROM pg_db_info  ").Scan(&countVo)
+	return countVo.Val
 }
 
 func (p *PgDbInfoDao) Paging(start, pageSize int) []PgDbInfo {

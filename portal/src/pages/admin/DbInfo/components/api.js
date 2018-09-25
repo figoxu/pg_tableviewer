@@ -17,7 +17,7 @@ const Api = {
             method: "GET",
             url: url,
         }).then(function (res) {
-            if (callback) callback(res.data);
+            if (callback) callback(res);
         }).catch(function (error) {
         });
     },

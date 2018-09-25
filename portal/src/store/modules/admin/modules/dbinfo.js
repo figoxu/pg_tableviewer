@@ -1,4 +1,4 @@
-const dbinfo = {
+export default  {
     namespaced: true,
     state: {
         mdfVisible: false,
@@ -17,5 +17,3 @@ const dbinfo = {
         }
     }
 }
-
-export default dbinfo

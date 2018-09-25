@@ -45,6 +45,9 @@
                     pg: that.currentPg,
                 };
                 Api.list(param, function (data) {
+                    console.log(">>>>>>>>")
+                    console.log(data)
+                    console.log("<<<<<<<<")
                     that.tableLoading = false;
                     that.totalPg =  data.totalPg;
                     that.data = data.data;

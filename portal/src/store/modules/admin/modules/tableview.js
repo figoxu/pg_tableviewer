@@ -1,9 +1,7 @@
-const tableview = {
+export default {
     namespaced: true,
     state: {
     },
     mutations: {
     }
 }
-
-export default tableview
