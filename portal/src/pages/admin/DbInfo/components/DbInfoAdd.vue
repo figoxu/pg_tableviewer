@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import Api from "../api"
+    import Api from "./api"
     import {mapMutations, mapState} from 'vuex'
 
     export default {
