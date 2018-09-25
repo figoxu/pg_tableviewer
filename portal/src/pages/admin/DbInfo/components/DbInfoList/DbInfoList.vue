@@ -47,6 +47,9 @@
                 data: []
             }
         }, methods: {
+            refresh:function () {
+                this.pg_change(this.currentPg);
+            },
             pg_change: function (pg) {
                 this.tableLoading = true;
                 this.currentPg = pg;

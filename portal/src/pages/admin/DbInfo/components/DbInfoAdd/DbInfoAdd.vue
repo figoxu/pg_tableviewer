@@ -47,9 +47,11 @@
         },
         methods: {
             commitAdd:function () {
-                var data = this.form;
-                Api.add(data);
-               this.SET_ADD_VISIBLE(false);
+                var that = this;
+                Api.add(this.form,function () {
+                    that.SET_ADD_VISIBLE(false);
+                    that.$emit("done",true);
+                });
             },
             ...mapMutations('admin/dbinfo', [
                 'SET_ADD_VISIBLE'

@@ -52,6 +52,7 @@
                 var that = this;
                 Api.mdf(this.form,function () {
                     that.SET_MDF_VISIBLE(false)
+                    that.$emit("done",true);
                 })
             },
             ...mapMutations('admin/dbinfo', ['SET_MDF_VISIBLE',"SET_MDF_RESOURCE"])
