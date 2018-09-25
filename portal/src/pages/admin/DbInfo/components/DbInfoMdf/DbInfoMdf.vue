@@ -33,7 +33,6 @@
         name: 'DbInfoMdf',
         data() {
             return {
-                options: [],
                 inline:true,
                 labelPosition:"left",
             }
@@ -56,12 +55,6 @@
                 })
             },
             ...mapMutations('admin/dbinfo', ['SET_MDF_VISIBLE',"SET_MDF_RESOURCE"])
-        },mounted: function () {
-            var that=this;
-            this.$nextTick(function () {
-                that.loadOptions();
-            })
         }
-
     }
 </script>
