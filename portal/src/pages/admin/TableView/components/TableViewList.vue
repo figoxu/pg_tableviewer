@@ -23,6 +23,18 @@
                     prop="description"
                     label="说明">
             </el-table-column>
+            <el-table-column
+                    prop="dbid"
+                    label="操作">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            @click="commentTable(scope.row)">表说明</el-button>
+                    <el-button
+                            size="mini"
+                            @click="commentColumn(scope.row)">列说明</el-button>
+                </template>
+            </el-table-column>
         </el-table>
     </div>
 </template>
@@ -44,6 +56,16 @@
             })
         },
         methods: {
+            commentTable:function (row) {
+                this.SET_MDF_RESOURCE(row);
+                this.SET_MDF_TABLE_VISIBLE(true);
+            },commentColumn:function (row) {
+                this.SET_MDF_RESOURCE(row);
+                this.SET_MDF_COLUMN_VISIBLE(true);
+            },
+            refresh:function () {
+                this.loadColumns();
+            },
             loadColumns: function () {
                 var that = this;
                 Api.columns({id: 11}, function (res) {
@@ -97,7 +119,8 @@
                     rowspan: 1,
                     colspan: 1
                 };
-            }
+            },
+            ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE',"SET_MDF_RESOURCE"])
         }, mounted: function () {
             var that = this;
             this.$nextTick(function () {

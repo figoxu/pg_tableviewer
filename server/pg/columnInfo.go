@@ -1,6 +1,7 @@
 package pg
 
 type ColumnInfo struct {
+	Dbid        int       `json:"dbid"`
 	Description string    `json:"description"`
 	Relname     string    `json:"relname"`
 	Nspname     string    `json:"nspname"`
@@ -9,7 +10,7 @@ type ColumnInfo struct {
 	TableInfo   TableInfo `json:"tableinfo"`
 }
 
-func (p *ColumnInfo) fixTableInfo(dbid int, tableName, conStr string)  {
+func (p *ColumnInfo) fixTableInfo(dbid int, tableName, conStr string) {
 	k := tableInfoKey(dbid, tableName)
 	v := cache.Get(k)
 	if v != nil {
@@ -52,6 +53,7 @@ ORDER BY
 	db.Raw(query).Scan(&columnInfoes)
 	infoes := make([]ColumnInfo, 0)
 	for _, cloumnInfo := range columnInfoes {
+		cloumnInfo.Dbid = dbid
 		cloumnInfo.fixTableInfo(dbid, cloumnInfo.Relname, conStr)
 		infoes = append(infoes, cloumnInfo)
 	}
