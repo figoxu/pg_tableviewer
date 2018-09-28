@@ -3,6 +3,7 @@
         <el-table
                 :data="columnData"
                 :height="500"
+                :span-method="objectSpanMethod"
                 border
                 style="width: 100%;">
             <el-table-column
@@ -11,8 +12,8 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="nspname"
-                    label="表空间">
+                    prop="tableinfo.description"
+                    label="表说明">
             </el-table-column>
             <el-table-column
                     prop="attname"
@@ -51,26 +52,53 @@
                 });
             },
             objectSpanMethod({row, column, rowIndex, columnIndex}) {
-//                if (columnIndex === 0) {
-//                    if (rowIndex % 2 === 0) {
-//                        return {
-//                            rowspan: 2,
-//                            colspan: 1
-//                        };
-//                    } else {
-//                        return {
-//                            rowspan: 0,
-//                            colspan: 0
-//                        };
-//                    }
-//                }
+                var that = this;
+                if (columnIndex === 0 || columnIndex===1) {
+                    var diffFlag = false;
+                    let nowVal = that.columnData[rowIndex].relname;
+                    if (rowIndex == 0) {
+                        diffFlag = true;
+                    } else {
+                        let preVal = that.columnData[rowIndex - 1].relname;
+                        diffFlag = (nowVal != preVal);
+                    }
+                    if (!diffFlag) {
+                        return {
+                            rowspan: 0,
+                            colspan: 1
+                        };
+                    }
+                    var hasNext = (that.columnData.length > rowIndex);
+                    if (!hasNext) {
+                        return {
+                            rowspan: 1,
+                            colspan: 1
+                        };
+                    }
+                    var rowCount = 1;
+                    for (var i = rowIndex + 1; i < that.columnData.length; i++) {
+                        let val = that.columnData[i].relname;
+                        if (val == nowVal) {
+                            rowCount++;
+                        } else {
+                            return {
+                                rowspan: rowCount,
+                                colspan: 1
+                            };
+                        }
+                    }
+                    return {
+                        rowspan: rowCount,
+                        colspan: 1
+                    };
+                }
 
                 return {
-                    rowspan: 0,
-                    colspan: 0
+                    rowspan: 1,
+                    colspan: 1
                 };
             }
-        },mounted: function () {
+        }, mounted: function () {
             var that = this;
             this.$nextTick(function () {
                 that.loadColumns();

@@ -9,15 +9,16 @@ type ColumnInfo struct {
 	TableInfo   TableInfo `json:"tableinfo"`
 }
 
-func (p *ColumnInfo) fixTableInfo(dbid int, tableName, conStr string) TableInfo {
+func (p *ColumnInfo) fixTableInfo(dbid int, tableName, conStr string)  {
 	k := tableInfoKey(dbid, tableName)
 	v := cache.Get(k)
 	if v != nil {
-		return v.(TableInfo)
+		p.TableInfo = v.(TableInfo)
+		return
 	}
 	GetAllTableInfoes(dbid, conStr)
 	v = cache.Get(k)
-	return v.(TableInfo)
+	p.TableInfo = v.(TableInfo)
 }
 
 func GetAllColumnInfoes(dbid int, conStr string) []ColumnInfo {
