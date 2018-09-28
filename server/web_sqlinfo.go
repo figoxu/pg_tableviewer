@@ -11,17 +11,17 @@ func h_tableInfo_all(c *gin.Context) {
 	dbid := env.ph.Int("dbid")
 	pgDbInfoDao := NewPgDbInfoDao(sysEnv.Db)
 	pgDbInfo := pgDbInfoDao.GetByKey(dbid)
-	infoes := pg.GetAllTableInfoes(pgDbInfo.ConStr())
+	infoes := pg.GetAllTableInfoes(dbid,pgDbInfo.ConStr())
 	c.JSON(http.StatusOK, infoes)
 }
 
-func h_columnInfo_by_tablename(c *gin.Context) {
+// curl http://localhost:8080/api/pg_db_info/table_info/11/columns
+func h_columnInfo_all(c *gin.Context) {
 	env := c.MustGet("env").(*Env)
 	dbid := env.ph.Int("dbid")
-	tablename := env.fh.String("tablename")
 	pgDbInfoDao := NewPgDbInfoDao(sysEnv.Db)
 	pgDbInfo := pgDbInfoDao.GetByKey(dbid)
-	infoes := pg.GetAllColumnInfoesByTableName(tablename, pgDbInfo.ConStr())
+	infoes := pg.GetAllColumnInfoes(dbid, pgDbInfo.ConStr())
 	c.JSON(http.StatusOK, infoes)
 }
 

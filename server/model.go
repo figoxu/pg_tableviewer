@@ -16,7 +16,7 @@ type PgDbInfo struct {
 }
 
 func (p *PgDbInfo) ConStr() string {
-	return fmt.Sprint("user=", p.User, " password=", p.Password, " dbname=", p.Dbname, " host=", p.Host, " Port=", p.Port, " sslmode=disable")
+	return fmt.Sprint("user=", p.User, " password=", p.Password, " dbname=", p.Dbname, " host=", p.Host, " port=", p.Port, " sslmode=disable")
 }
 
 type PgDbInfoDao struct {
@@ -57,4 +57,10 @@ func (p *PgDbInfoDao) Paging(start, pageSize int) []PgDbInfo {
 
 func (p *PgDbInfoDao) DelById(id int) {
 	p.db.Exec("DELETE FROM pg_db_info WHERE id=? ", id)
+}
+
+func (p *PgDbInfoDao) All()[]PgDbInfo{
+	pgDbInfoes:=make([]PgDbInfo,0)
+	p.db.Raw("SELECT * FROM pg_db_info").Scan(&pgDbInfoes)
+	return pgDbInfoes
 }

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="overflow-y:scroll;">
         <TableViewList></TableViewList>
     </div>
 </template>

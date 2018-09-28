@@ -71,10 +71,11 @@ func mount() *gin.Engine {
 			pg_db_info.POST("/update", h_pgdbinfo_update)
 			pg_db_info.GET("/list/:size/:pg", h_pgdbinfo_list)
 			pg_db_info.POST("/del/:id", h_pgdbinfo_del)
+			pg_db_info.GET("/all", h_pgdbinfo_all)
 			table_info := pg_db_info.Group("/table_info/:dbid")
 			{
 				table_info.GET("/tables", h_tableInfo_all)
-				table_info.GET("/columns", h_columnInfo_by_tablename)
+				table_info.GET("/columns", h_columnInfo_all)
 				table_info.PUT("/comment", h_comment)
 			}
 		}

@@ -59,3 +59,9 @@ func h_pgdbinfo_del(c *gin.Context){
 	pgDbInfoDao := NewPgDbInfoDao(sysEnv.Db)
 	pgDbInfoDao.DelById(id)
 }
+
+func h_pgdbinfo_all(c *gin.Context){
+	pgDbInfoDao := NewPgDbInfoDao(sysEnv.Db)
+	infoes := pgDbInfoDao.All()
+	c.JSON(http.StatusOK, infoes)
+}

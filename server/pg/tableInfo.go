@@ -5,16 +5,27 @@ import (
 	"github.com/figoxu/Figo"
 	"time"
 	"github.com/quexer/utee"
+	"fmt"
 )
 
-type TableInfo struct {
-	Description string
-	Relname     string
-	Nspname     string
-	Comment     string
+var cache *utee.TimerCache
+
+func init() {
+	cache = utee.NewTimerCache(60, nil)
 }
 
-func GetAllTableInfoes(conStr string) []TableInfo {
+func tableInfoKey(dbid int, tablename string) string {
+	return fmt.Sprint(dbid, "_", tablename)
+}
+
+type TableInfo struct {
+	Description string `json:"description"`
+	Relname     string `json:"relname"`
+	Nspname     string `json:"nspname"`
+	Comment     string `json:"comment"`
+}
+
+func GetAllTableInfoes(dbid int, conStr string) []TableInfo {
 	tableInfoes := make([]TableInfo, 0)
 	query := `SELECT
 	pd.description,
@@ -42,6 +53,9 @@ ORDER BY
 	relname`
 	db := initPgByConStr(conStr)
 	db.Raw(query).Scan(&tableInfoes)
+	for _, tableInfo := range tableInfoes {
+		cache.Put(tableInfoKey(dbid, tableInfo.Relname), tableInfo)
+	}
 	return tableInfoes
 }
 

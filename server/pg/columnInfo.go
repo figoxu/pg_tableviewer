@@ -1,14 +1,26 @@
 package pg
 
 type ColumnInfo struct {
-	Description string
-	Relname     string
-	Nspname     string
-	Attname     string
-	Comment     string
+	Description string    `json:"description"`
+	Relname     string    `json:"relname"`
+	Nspname     string    `json:"nspname"`
+	Attname     string    `json:"attname"`
+	Comment     string    `json:"comment"`
+	TableInfo   TableInfo `json:"tableinfo"`
 }
 
-func GetAllColumnInfoesByTableName(tableName, conStr string) []ColumnInfo {
+func (p *ColumnInfo) fixTableInfo(dbid int, tableName, conStr string) TableInfo {
+	k := tableInfoKey(dbid, tableName)
+	v := cache.Get(k)
+	if v != nil {
+		return v.(TableInfo)
+	}
+	GetAllTableInfoes(dbid, conStr)
+	v = cache.Get(k)
+	return v.(TableInfo)
+}
+
+func GetAllColumnInfoes(dbid int, conStr string) []ColumnInfo {
 	columnInfoes := make([]ColumnInfo, 0)
 	query := `SELECT
 	pd.description,
@@ -29,13 +41,18 @@ FROM
 			pc.relnamespace = 2200
 		AND pc.relkind IN('r')
 		AND pc.oid NOT IN(SELECT inhrelid FROM pg_inherits)
-		AND pc.relname =?
 	) tab
 LEFT OUTER JOIN pg_description pd ON tab.oid = pd.objoid
-LEFT OUTER JOIN pg_attribute pa ON pa.attrelid = pd.objoid
+LEFT OUTER JOIN pg_attribute pa ON tab.oid = pa.attrelid
+AND pa.attnum>0
 ORDER BY
-	relname`
+	relname,pa.attnum`
 	db := initPgByConStr(conStr)
-	db.Raw(query, tableName).Scan(&columnInfoes)
-	return columnInfoes
+	db.Raw(query).Scan(&columnInfoes)
+	infoes := make([]ColumnInfo, 0)
+	for _, cloumnInfo := range columnInfoes {
+		cloumnInfo.fixTableInfo(dbid, cloumnInfo.Relname, conStr)
+		infoes = append(infoes, cloumnInfo)
+	}
+	return infoes
 }
