@@ -2,7 +2,7 @@
     <div>
         <el-form :model="form" :label-position="labelPosition" :inline="inline" >
             <el-form-item label="表名">
-                <el-input v-model="form.relname" readonly="true"></el-input>
+                <el-input v-model="form.relname" :readonly="true"></el-input>
             </el-form-item>
             <el-form-item label="表描述">
                 <el-input v-model="form.tableinfo.description" ></el-input>
@@ -42,8 +42,15 @@
             }
         },methods:{
             modify:function(){
-                var that = this;
-                //todo comment on column
+                var form = this.form;
+                Api.commentColumn({
+                    id: form.dbid,
+                    comment: form.description,
+                    attname: form.attname,
+                    relname: form.relname,
+                    nspname: form.nspname,
+                });
+                this.SET_MDF_COLUMN_VISIBLE(false)
             },
             ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE',"SET_MDF_RESOURCE"])
         }

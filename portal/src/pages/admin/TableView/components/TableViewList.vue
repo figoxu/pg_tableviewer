@@ -8,12 +8,20 @@
                 style="width: 100%;">
             <el-table-column
                     prop="relname"
-                    label="表名"
+                    label="表信息"
                     width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="tableinfo.description"
-                    label="表说明">
+                <template slot-scope="scope">
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span>{{ scope.row.relname}}</span>
+                        </div>
+                        <div class="text item">
+                            <el-button style="float: right; padding: 3px 0" @click="commentTable(scope.row)" type="mini"
+                                       icon="el-icon-edit"></el-button>
+                            {{ scope.row.tableinfo.description}}
+                        </div>
+                    </el-card>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="attname"
@@ -22,17 +30,14 @@
             <el-table-column
                     prop="description"
                     label="说明">
-            </el-table-column>
-            <el-table-column
-                    prop="dbid"
-                    label="操作">
+
                 <template slot-scope="scope">
-                    <el-button
-                            size="mini"
-                            @click="commentTable(scope.row)">表说明</el-button>
-                    <el-button
-                            size="mini"
-                            @click="commentColumn(scope.row)">列说明</el-button>
+                    <div class="text item">
+                        {{ scope.row.description }}
+                        <el-button style="float: right; padding: 3px 0" @click="commentColumn(scope.row)" type="mini"
+                                   icon="el-icon-edit"></el-button>
+
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -56,14 +61,14 @@
             })
         },
         methods: {
-            commentTable:function (row) {
+            commentTable: function (row) {
                 this.SET_MDF_RESOURCE(row);
                 this.SET_MDF_TABLE_VISIBLE(true);
-            },commentColumn:function (row) {
+            }, commentColumn: function (row) {
                 this.SET_MDF_RESOURCE(row);
                 this.SET_MDF_COLUMN_VISIBLE(true);
             },
-            refresh:function () {
+            refresh: function () {
                 this.loadColumns();
             },
             loadColumns: function () {
@@ -75,7 +80,7 @@
             },
             objectSpanMethod({row, column, rowIndex, columnIndex}) {
                 var that = this;
-                if (columnIndex === 0 || columnIndex===1) {
+                if (columnIndex === 0) {
                     var diffFlag = false;
                     let nowVal = that.columnData[rowIndex].relname;
                     if (rowIndex == 0) {
@@ -120,7 +125,7 @@
                     colspan: 1
                 };
             },
-            ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE',"SET_MDF_RESOURCE"])
+            ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE', "SET_MDF_RESOURCE"])
         }, mounted: function () {
             var that = this;
             this.$nextTick(function () {

@@ -76,7 +76,8 @@ func mount() *gin.Engine {
 			{
 				table_info.GET("/tables", h_tableInfo_all)
 				table_info.GET("/columns", h_columnInfo_all)
-				table_info.PUT("/comment", h_comment)
+				table_info.PUT("/comment/table", h_comment_table)
+				table_info.PUT("/comment/column", h_comment_column)
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 import axios from "axios";
+import http from "../../../../common/http"
 
 const Api = {
     columns:function (data,callback) {
@@ -9,6 +10,30 @@ const Api = {
         }).then(function (res) {
             console.log("xxxx")
             console.log(res)
+            if (callback) callback(res);
+        }).catch(function (error) {
+        });
+    },
+    commentTable:function (data,callback) {
+        var url = "/api/pg_db_info/table_info/"+data.id+"/comment/table";
+        axios({
+            method: "PUT",
+            url: url,
+            transformRequest: [http.transJson2From],
+            data:data,
+        }).then(function (res) {
+            if (callback) callback(res);
+        }).catch(function (error) {
+        });
+    },
+    commentColumn:function (data,callback) {
+        var url = "/api/pg_db_info/table_info/"+data.id+"/comment/column";
+        axios({
+            method: "PUT",
+            url: url,
+            transformRequest: [http.transJson2From],
+            data:data,
+        }).then(function (res) {
             if (callback) callback(res);
         }).catch(function (error) {
         });

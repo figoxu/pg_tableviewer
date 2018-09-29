@@ -1,11 +1,11 @@
 <template>
     <div>
-        <el-form :model="form" :label-position="labelPosition" :inline="inline" >
+        <el-form :model="form" :label-position="labelPosition" :inline="inline">
             <el-form-item label="表名">
-                <el-input v-model="form.relname" readonly="true"></el-input>
+                <el-input v-model="form.relname" :readonly='true' ></el-input>
             </el-form-item>
             <el-form-item label="表描述">
-                <el-input v-model="form.tableinfo.description" ></el-input>
+                <el-input v-model="form.tableinfo.description"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -21,25 +21,31 @@
         name: "TableEdit",
         data() {
             return {
-                inline:true,
-                labelPosition:"left",
+                inline: true,
+                labelPosition: "left",
             }
         },
         computed: {
-            form:{
+            form: {
                 get: function () {
                     return this.$store.state.admin.tableview.mdfResource;
                 },
                 set: function (newValue) {
-                    this.SET_MDF_RESOURCE( newValue );
+                    this.SET_MDF_RESOURCE(newValue);
                 }
             }
-        },methods:{
-            modify:function(){
-                var that = this;
-                //todo comment on table
+        }, methods: {
+            modify: function () {
+                var form = this.form;
+                Api.commentTable({
+                    id: form.dbid,
+                    comment: form.tableinfo.description,
+                    relname: form.relname,
+                    nspname: form.nspname,
+                });
+                this.SET_MDF_TABLE_VISIBLE(false);
             },
-            ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE',"SET_MDF_RESOURCE"])
+            ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE', "SET_MDF_RESOURCE"])
         }
     }
 </script>
