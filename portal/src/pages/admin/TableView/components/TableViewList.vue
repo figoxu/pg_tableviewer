@@ -1,5 +1,4 @@
 <template>
-    <div>
         <el-table
                 :data="columnData"
                 :height="500"
@@ -49,18 +48,26 @@
                     prop="attlen"
                     width="80px"
                     label="数据长度">
+                <template slot-scope="scope">
+                    <el-tag type="info" v-if="scope.row.attlen ==-1 ">
+                        不限
+                    </el-tag>
+                    <el-tag type="success" v-else>
+                        {{ scope.row.attlen }}
+                    </el-tag>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="attnotnull"
                     width="80px"
                     label="必填">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.attnotnull ">
-                        是
-                    </div>
-                    <div v-else>
-                        否
-                    </div>
+                        <el-tag type="success" v-if="scope.row.attnotnull ">
+                            是
+                        </el-tag>
+                        <el-tag type="info" v-else>
+                            否
+                        </el-tag>
                 </template>
             </el-table-column>
             <el-table-column
@@ -73,16 +80,15 @@
                     prop="attisdropped"
                     label="已删">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.attisdropped ">
-                        是
-                    </div>
-                    <div v-else>
-                        否
-                    </div>
+                        <el-tag type="info"  v-if="scope.row.attisdropped ">
+                            是
+                        </el-tag>
+                        <el-tag type="success" v-else>
+                            否
+                        </el-tag>
                 </template>
             </el-table-column>
         </el-table>
-    </div>
 </template>
 
 <script>

@@ -1,13 +1,18 @@
 package pg
 
 type ColumnInfo struct {
-	Dbid        int       `json:"dbid"`
-	Description string    `json:"description"`
-	Relname     string    `json:"relname"`
-	Nspname     string    `json:"nspname"`
-	Attname     string    `json:"attname"`
-	Comment     string    `json:"comment"`
-	TableInfo   TableInfo `json:"tableinfo"`
+	Dbid         int       `json:"dbid"`
+	Description  string    `json:"description"`
+	Relname      string    `json:"relname"`
+	Nspname      string    `json:"nspname"`
+	Attname      string    `json:"attname"`
+	Comment      string    `json:"comment"`
+	TableInfo    TableInfo `json:"tableinfo"`
+	Typname      string    `json:"typname"`      //数据类型
+	Adsrc        string    `json:"adsrc"`        //默认值
+	Attnotnull   bool      `json:"attnotnull"`   //是否允许为空
+	Attlen       int       `json:"attlen"`       //数据长度
+	Attisdropped bool      `json:"attisdropped"` //是否已删除
 }
 
 func (p *ColumnInfo) fixTableInfo(dbid int, tableName, conStr string) {
@@ -30,9 +35,12 @@ func GetAllColumnInfoes(dbid int, conStr string) []ColumnInfo {
 		tab.nspname,
 		pa.attname,
 		pa.attnum,
-		pa.attrelid
+		pa.attrelid,
+		pa.atttypid,
+		pa.attlen,
+		pa.attnotnull,
+		pa.attisdropped
 	 from
-
 		(
 			SELECT
 				pc.oid,
@@ -52,9 +60,14 @@ func GetAllColumnInfoes(dbid int, conStr string) []ColumnInfo {
 ), emp as (
 	select att.*,'' description from att where att.attrelid ||'_'||att.attnum not in ( select objoid||'_'|| objsubid from  pg_description) and att.attnum>0
 ) , res as (
-	select * from emp union select * from cmt
+	select a.*,pt.typname from (
+		select * from emp union select * from cmt
+	)a ,pg_type pt
+	where a.atttypid=pt.oid
 )
-select * from res order by relname,attnum
+select res.*,pa.adsrc from res LEFT OUTER JOIN pg_attrdef pa
+on  res.attnum=pa.adnum  and res.attrelid=pa.adrelid
+order by relname,attnum
 `
 	db := initPgByConStr(conStr)
 	db.Raw(query).Scan(&columnInfoes)
