@@ -25,18 +25,59 @@
             </el-table-column>
             <el-table-column
                     prop="attname"
+                    width="150px"
                     label="列名">
             </el-table-column>
             <el-table-column
                     prop="description"
                     label="说明">
-
                 <template slot-scope="scope">
                     <div class="text item">
                         {{ scope.row.description }}
                         <el-button style="float: right; padding: 3px 0" @click="commentColumn(scope.row)" type="mini"
                                    icon="el-icon-edit"></el-button>
+                    </div>
+                </template>
+            </el-table-column>
 
+            <el-table-column
+                    prop="typname"
+                    width="80px"
+                    label="数据类型">
+            </el-table-column>
+            <el-table-column
+                    prop="attlen"
+                    width="80px"
+                    label="数据长度">
+            </el-table-column>
+            <el-table-column
+                    prop="attnotnull"
+                    width="80px"
+                    label="必填">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.attnotnull ">
+                        是
+                    </div>
+                    <div v-else>
+                        否
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="adsrc"
+                    width="300px"
+                    label="默认值">
+            </el-table-column>
+            <el-table-column
+                    width="80px"
+                    prop="attisdropped"
+                    label="已删">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.attisdropped ">
+                        是
+                    </div>
+                    <div v-else>
+                        否
                     </div>
                 </template>
             </el-table-column>
