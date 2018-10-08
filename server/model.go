@@ -8,6 +8,7 @@ import (
 
 type PgDbInfo struct {
 	Id       int    `json:"id"`
+	Name     string `json:"name"`
 	User     string `json:"user"`
 	Password string `json:"password"`
 	Dbname   string `json:"dbname"`
@@ -59,8 +60,8 @@ func (p *PgDbInfoDao) DelById(id int) {
 	p.db.Exec("DELETE FROM pg_db_info WHERE id=? ", id)
 }
 
-func (p *PgDbInfoDao) All()[]PgDbInfo{
-	pgDbInfoes:=make([]PgDbInfo,0)
+func (p *PgDbInfoDao) All() []PgDbInfo {
+	pgDbInfoes := make([]PgDbInfo, 0)
 	p.db.Raw("SELECT * FROM pg_db_info").Scan(&pgDbInfoes)
 	return pgDbInfoes
 }

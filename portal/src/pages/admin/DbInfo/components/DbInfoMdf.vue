@@ -1,6 +1,9 @@
 <template lang="html">
     <div>
         <el-form :model="form" :label-position="labelPosition" :inline="inline" >
+            <el-form-item label="名称">
+              <el-input v-model="form.name" ></el-input>
+            </el-form-item>
             <el-form-item label="账号">
               <el-input v-model="form.user" ></el-input>
             </el-form-item>

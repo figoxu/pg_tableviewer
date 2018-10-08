@@ -115,13 +115,13 @@
                 this.SET_MDF_RESOURCE(row);
                 this.SET_MDF_COLUMN_VISIBLE(true);
             },
-            refresh: function () {
-                this.loadColumns();
+            refresh: function (id) {
+                this.loadColumns(id);
             },
-            loadColumns: function () {
+            loadColumns: function (id) {
                 var that = this;
-                Api.columns({id: 11}, function (res) {
-                    console.log(res);
+                Api.columns({id: id}, function (res) {
+                    console.log(id);
                     that.columnData = res;
                 });
             },
@@ -173,11 +173,6 @@
                 };
             },
             ...mapMutations('admin/tableview', ['SET_MDF_TABLE_VISIBLE', 'SET_MDF_COLUMN_VISIBLE', "SET_MDF_RESOURCE"])
-        }, mounted: function () {
-            var that = this;
-            this.$nextTick(function () {
-                that.loadColumns();
-            })
         },
         watch: {
             data (val) {

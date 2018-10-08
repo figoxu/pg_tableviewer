@@ -7,6 +7,7 @@
                   v-loading="tableLoading"
         >
             <el-table-column prop="id" label="标志"></el-table-column>
+            <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column prop="user" label="账号" width="100"></el-table-column>
             <el-table-column prop="password" label="密码" width="100"></el-table-column>
             <el-table-column prop="dbname" label="实例名" width="199"></el-table-column>

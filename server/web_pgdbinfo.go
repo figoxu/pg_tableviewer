@@ -30,6 +30,7 @@ func h_pgdbinfo_update(c *gin.Context){
 	})
 }
 
+//curl http://localhost:8080/api/pg_db_info/all
 func h_pgdbinfo_list(c *gin.Context){
 	env := c.MustGet("env").(*Env)
 	ph := env.ph
